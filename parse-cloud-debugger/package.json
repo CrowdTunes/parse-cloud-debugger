@@ -24,6 +24,6 @@
     "localStorage"  : "^1.0.2",
     "xmlhttprequest": "^1.6.0",
     "body-parser"   : "^1.0.2",
-    "request"       : "^2.53.1"
+    "request"       : "^2.53.0”
   }
 }
