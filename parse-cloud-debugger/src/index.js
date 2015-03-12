@@ -121,18 +121,29 @@ Parse.Cloud.httpRequest = function (options) {
     var requestOptions = {
         "url"    : options.url,
         "headers": options.headers || {},
-        "body"   : options.body || {},
         "params" : options.params || {},
         "method" : options.method || "GET"
     };
+    if (typeof options.body == 'object') {
+    	requestOptions['formData'] = options.body;
+    }
+    else if (typeof options.body == 'string') {
+    	requestOptions['body'] = options.body;
+    }
 
     var callback = function (error, response, body) {
+    	var data;
+    	try {
+    		data = JSON.parse(body);
+    	} catch (e) {
+    		// no-op
+    	}
         var result = {
             "headers": response.headers,
             "text"   : body,
             "status" : response.statusCode,
             "cookies": {},
-            "data"   : {},
+            "data"   : data,
             "buffer" : {}
         };
 
@@ -148,7 +159,7 @@ Parse.Cloud.httpRequest = function (options) {
         }
     }
 
-    request(options, callback);
+    request(requestOptions, callback);
 }
 
 Parse.Cloud.define = function (functionName, callBack) {
